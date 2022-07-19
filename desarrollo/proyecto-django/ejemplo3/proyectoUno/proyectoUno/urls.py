@@ -25,8 +25,8 @@ from administrativo import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'estudiantes', views.EstudianteViewSet)
-router.register(r'numerost', views.NumeroTelefonicoViewSet)
+router.register(r'propietarios', views.PropietarioViewSet)
+router.register(r'departamentos', views.DepartamentoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -2,69 +2,37 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django import forms
 
-from administrativo.models import Estudiante, \
-        NumeroTelefonico
+from administrativo.models import Propietario, Departamento
 
-class EstudianteForm(ModelForm):
+class PropietarioForm(ModelForm):
     class Meta:
-        model = Estudiante
-        fields = ['nombre', 'apellido', 'cedula', 'correo']
+        model = Propietario
+        fields = ['nombre', 'apellido', 'edad', 'nacionalidad']
         labels = {
             'nombre': _('Ingrese nombre por favor'),
             'apellido': _('Ingrese apellido por favor'),
-            'cedula': _('Ingrese cédula por favor'),
-            'correo': _('Ingrese correo por favor'),
+            'edad': _('Ingrese su edad por favor'),
+            'nacionalidad': _('Ingrese su nacionalidad por favor'),
         }
 
 
-    def clean_nombre(self):
-        valor = self.cleaned_data['nombre']
-        num_palabras = len(valor.split())
-        """
-        valor = "René"
-        ["René"] # 1
-        len( ["René"])
-        """
-
-        if num_palabras < 2:
-            raise forms.ValidationError("Ingrese dos nombre por favor")
-        return valor
-
-    def clean_apellido(self):
-        valor = self.cleaned_data['apellido']
-        num_palabras = len(valor.split())
-
-        if num_palabras < 2:
-            raise forms.ValidationError("Ingrese dos apellidos por favor")
-        return valor
-
-    def clean_cedula(self):
-        valor = self.cleaned_data['cedula']
-        if len(valor) != 10:
-            raise forms.ValidationError("Ingrese cédula con 10 dígitos")
-        return valor
-
-    def clean_correo(self):
-        valor = self.cleaned_data['correo']
-        if "@" not in valor or "utpl.edu.ec" not in valor:
-            raise forms.ValidationError("Ingrese correo válido para la Universidad")
-        return valor
 
 
-class NumeroTelefonicoForm(ModelForm):
+class DepartamentoForm(ModelForm):
     class Meta:
-        model = NumeroTelefonico
-        fields = ['telefono', 'tipo', 'estudiante']
+        model = Departamento
+        fields = ['costo_depar', 'num_cuartos', 'num_baños', 'valor_alicuota']
 
 
-class NumeroTelefonicoEstudianteForm(ModelForm):
 
-    def __init__(self, estudiante, *args, **kwargs):
-        super(NumeroTelefonicoEstudianteForm, self).__init__(*args, **kwargs)
-        self.initial['estudiante'] = estudiante
-        self.fields["estudiante"].widget = forms.widgets.HiddenInput()
-        print(estudiante)
+class PropietarioDepartamentoForm(ModelForm):
+
+    def __init__(self, propietario, *args, **kwargs):
+        super(PropietarioDepartamentoForm, self).__init__(*args, **kwargs)
+        self.initial['propietario'] = propietario
+        self.fields["propietario"].widget = forms.widgets.HiddenInput()
+        print(propietario)
 
     class Meta:
-        model = NumeroTelefonico
-        fields = ['telefono', 'tipo', 'estudiante']
+        model = Departamento
+        fields = ['costo_depar', 'num_cuartos', 'num_baños', 'valor_alicuota']
